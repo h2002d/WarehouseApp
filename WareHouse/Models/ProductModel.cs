@@ -10,7 +10,7 @@ using ZXing;
 
 namespace WareHouse.Models
 {
-    public class Product
+    public class ProductModel
     {
         #region Properties
         public int? Id { get; set; }
@@ -30,7 +30,7 @@ namespace WareHouse.Models
         /// <summary>GetProducts is a method in the Product class that returns product
         /// </summary>
         /// <param name="id">Product id, NULL to get all products</param>
-        internal List<Product> GetProducts(int? id) => dao.getProducts(id);
+        internal List<ProductModel> GetProducts(int? id) => dao.getProducts(id);
 
         /// <summary>Delete is a method in the Product class that marks product as deleted
         /// </summary>

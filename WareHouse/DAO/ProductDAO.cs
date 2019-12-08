@@ -10,7 +10,7 @@ namespace WareHouse.DAO
 {
     public class ProductDAO : DAO
     {
-        internal int saveProduct(Product product)
+        internal int saveProduct(ProductModel product)
         {
             using (SqlConnection sqlConnection = new SqlConnection(Main_Connectionstring))
             {
@@ -41,7 +41,7 @@ namespace WareHouse.DAO
         /// <summary>getProducts is a method in the Product class that returns product
         /// </summary>
         /// <param name="id">Product id, NULL to get all products</param>
-        internal List<Product> getProducts(int? id)
+        internal List<ProductModel> getProducts(int? id)
         {
             using (SqlConnection sqlConnection = new SqlConnection(Main_Connectionstring))
             {
@@ -56,10 +56,10 @@ namespace WareHouse.DAO
                         else
                             command.Parameters.AddWithValue("@Id", DBNull.Value);
                         SqlDataReader rdr = command.ExecuteReader();
-                        var productList = new List<Product>();
+                        var productList = new List<ProductModel>();
                         while (rdr.Read())
                         {
-                            var product = new Product();
+                            var product = new ProductModel();
                             product.Id = Convert.ToInt32(rdr["Id"]);
                             product.Name = rdr["Name"].ToString();
                             product.Description = rdr["Description"].ToString();

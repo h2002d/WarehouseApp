@@ -21,7 +21,7 @@ namespace WareHouse.Controllers
         [HttpGet]
         public ActionResult Warehouse()
         {
-            var productList = new Product().GetProducts(null);
+            var productList = new ProductModel().GetProducts(null);
             return View(productList);
         }
 
@@ -36,7 +36,7 @@ namespace WareHouse.Controllers
         public PartialViewResult _OrderReport(int? productId,DateTime? startDate,DateTime? endDate)
         {
             var reportView = new OrderViewModel().GetOrdersByDate(productId,startDate, endDate);
-            ViewBag.ProductList = new Product().GetProducts(null);
+            ViewBag.ProductList = new ProductModel().GetProducts(null);
             return PartialView(reportView);
         }
 

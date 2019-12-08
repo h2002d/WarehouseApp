@@ -17,7 +17,7 @@ namespace WareHouse.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            var product = new Product();
+            var product = new ProductModel();
             return View(product.GetProducts(null));
         }
 
@@ -25,7 +25,7 @@ namespace WareHouse.Controllers
         [HttpGet]
         public ActionResult Create(int? id)
         {
-            Product product = new Product();
+            ProductModel product = new ProductModel();
             if (id != null)
                 product = product.GetProducts(id).FirstOrDefault();
             return View(product);
@@ -33,7 +33,7 @@ namespace WareHouse.Controllers
 
         [Authorize(Roles = "Administrators")]
         [HttpPost]
-        public ActionResult Create(Product product)
+        public ActionResult Create(ProductModel product)
         {
             if (ModelState.IsValid)
             {
@@ -52,7 +52,7 @@ namespace WareHouse.Controllers
         {
             try
             {
-                Product product = new Product();
+                ProductModel product = new ProductModel();
                 product = product.GetProducts(id).FirstOrDefault();
                 if (product == null)
                 {
@@ -72,7 +72,7 @@ namespace WareHouse.Controllers
 
         public ActionResult QRGenerator(int productId)
         {
-            var product = new Product().GetProducts(productId).FirstOrDefault();
+            var product = new ProductModel().GetProducts(productId).FirstOrDefault();
             return File(product.QR(), "application/octet-stream", "barcode.jpg");
         }
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using WareHouse.DAO;
@@ -13,13 +14,13 @@ namespace WareHouse.Models
         #region Properties
         public int Id { get; set; }
         public int ProductId { get; set; }
-        private Product _product;
-        public Product Product
+        private ProductModel _product;
+        public ProductModel Product
         {
             get
             {
                 if (_product == null)
-                    _product = new Product().GetProducts(ProductId).FirstOrDefault();
+                    _product = new ProductModel().GetProducts(ProductId).FirstOrDefault();
                 return _product;
             }
         }
@@ -35,7 +36,7 @@ namespace WareHouse.Models
         private OrderValidator validator = new OrderValidator();
         #endregion
 
-        public List<Product> AllProducts { get { return new Product().GetProducts(null); } }
+        public List<ProductModel> AllProducts { get { return new ProductModel().GetProducts(null); } }
 
         private OrderDAO dao = new OrderDAO();
 
@@ -62,7 +63,7 @@ namespace WareHouse.Models
         /// <param name="productId">Product id for calculation</param>
         internal decimal CalculateSum(decimal quantity, int productId)
         {
-            var product = new Product().GetProducts(productId).FirstOrDefault();
+            var product = new ProductModel().GetProducts(productId).FirstOrDefault();
             if (product != null)
             {
                 return product.Price * quantity;

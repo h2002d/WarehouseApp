@@ -30,7 +30,7 @@ namespace WareHouse.DAO
                         while (rdr.Read())
                         {
                             var reportView = new StockReportViewModel();
-                            reportView.Product = new Product().GetProducts(Convert.ToInt32(rdr["Id"])).First();
+                            reportView.Product = new ProductModel().GetProducts(Convert.ToInt32(rdr["Id"])).First();
                             reportView.Quantity= Convert.ToDecimal(rdr["Sum"]);
                             reportList.Add(reportView);
                         }

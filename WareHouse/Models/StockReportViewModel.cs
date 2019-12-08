@@ -8,7 +8,7 @@ namespace WareHouse.Models
 {
     public class StockReportViewModel
     {
-        public Product Product { get; set; }
+        public ProductModel Product { get; set; }
         public decimal Quantity { get; set; }
         //public ReportViewModel()
         //{
