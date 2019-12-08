@@ -24,6 +24,8 @@ namespace WareHouse.Models
             }
         }
         public DateTime OrderDate { get; set; }
+        [Required]
+        [Range(double.Epsilon, double.MaxValue,ErrorMessage ="Quantity must be grater then 0.")]
         public decimal Quantity { get; set; }
         public decimal Sum { get; set; }
         public string Username { get; set; }
