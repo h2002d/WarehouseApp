@@ -1,0 +1,112 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Warehouse application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+    @Scripts.Render("~/bundles/jquery")
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Warehouse", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li>@Html.ActionLink("Orders", "Index", "Order")</li>
+                    }
+                    @if (User.IsInRole("Administrators"))
+                    {
+                        <li>@Html.ActionLink("Products", "Index", "Product")</li>
+                        <li>@Html.ActionLink("Reports", "Index", "Report")</li>
+                    }
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - Warehouse</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/main")
+    @RenderSection("scripts", required: false)
+    <script src="~/Scripts/jquery.signalR-2.4.1.min.js"></script>
+    <script src="~/signalr/hubs"></script>
+
+    <script src="~/Scripts/notify.js"></script>
+    <script>
+        $(function () {
+            var order = $.connection.orderHub;
+            order.client.newOrder = function (name, message) {
+                notifyMe(name, message);
+            };
+
+            $.connection.hub.start().done(function () {
+                //$('#order_create').click(function () {
+                //    var quantity = $('#Quantity').val();//Getting quantity from input
+                //    var productName = $('#ProductId').text();//Getting product from dropdown
+                //    order.server.orderMade(productName, quantity);
+                //});
+            });
+        });
+
+        function notifyMe(name, quantity) {
+            $.notify('New order added product:' + name + ', quantity: ' + quantity, {
+                type: "info",
+                offset: {
+                    x: 50,
+                    y: 100
+                }
+            });
+            var notificationText = 'New order added product:' + name + ', quantity: ' + quantity;
+            // Let's check if the browser supports notifications
+            if (!("Notification" in window)) {
+                alert("This browser does not support desktop notification");
+            }
+
+            // Let's check whether notification permissions have already been granted
+            else if (Notification.permission === "granted") {
+                // If it's okay let's create a notification
+                var notification = new Notification(notificationText);
+                notification.onclick = function () {
+                    window.open('http://stackoverflow.com/a/13328397/1269037');
+                };
+            }
+
+            // Otherwise, we need to ask the user for permission
+            else if (Notification.permission !== "denied") {
+                Notification.requestPermission().then(function (permission) {
+                    // If the user accepts, let's create a notification
+                    if (permission === "granted") {
+                        var notification = new Notification(notificationText);
+                        notification.onclick = function () {
+                            window.open('http://stackoverflow.com/a/13328397/1269037');
+                        };
+                    }
+                });
+            }
+
+            // At last, if the user has denied notifications, and you
+            // want to be respectful there is no need to bother them any more.
+        }
+    </script>
+</body>
+</html>

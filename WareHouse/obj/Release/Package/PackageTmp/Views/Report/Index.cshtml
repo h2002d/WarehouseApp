@@ -1,0 +1,14 @@
+﻿@{
+    ViewBag.Title = "Reporting services";
+}
+
+
+<div class="w3-bar w3-black">
+    <button class="w3-bar-item w3-button tablink w3-red" onclick="openLink(event,'_StockReport')">Stock</button>
+    <button class="w3-bar-item w3-button tablink" onclick="openLink(event,'_OrderReport')">Order</button>
+</div>
+<div class="container" id="report_Content">
+    @Html.Action("_StockReport")
+</div>
+
+<script src="~/Scripts/report.js"></script>

@@ -1,0 +1,72 @@
+﻿@model IEnumerable<WareHouse.Models.OrderViewModel>
+    <iframe id="txtArea1" style="display:none"></iframe>
+<div class="container">
+    <div class="row" style="margin:20px 0;">
+        <div class="col-sm-12">
+             @Html.DropDownList("productId",
+                               new SelectList(ViewBag.ProductList,
+                                "Id", "Name"),
+                                "--  Select Product  --",
+                              new { @class = "col-sm-4 form-control"})
+            <input type="date" class="control-label col-sm-4 form-control" required name="startDate" id="startDate" />
+            <input type="date" class="control-label col-sm-4 form-control" required name="endDate" id="endDate" />
+            <input type="button" value="Filter" class="btn btn-success" onclick="filterOrder()" />
+            <button id="btnExport" class="btn btn-success" onclick="fnExcelReport();"> <span class="glyphicon glyphicon-save-file"></span> </button>
+        </div>
+    </div>
+    <div class="row" >
+
+        <table class="table" id="report_Content_table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.ProductId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Product.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Quantity)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Sum)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.OrderDate)
+                </th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr style="background-color:@(item.Quantity<0?"#ff3636":"#2eff66")">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProductId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Product.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Quantity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Sum)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OrderDate)
+                    </td>
+                </tr>
+            }
+            @{ 
+                decimal total = Model.Sum(x => x.Sum);
+            }
+            <tr >
+                <td></td>
+                <td></td>
+                <td>TOTAL</td>
+                <td style="background-color:@(total<0?"#ff3636":"#2eff66")">
+                    @total
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </div>
+</div>

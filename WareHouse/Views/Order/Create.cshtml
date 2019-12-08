@@ -1,0 +1,62 @@
+﻿@model WareHouse.Models.OrderViewModel
+
+@{
+    ViewBag.Title = "Create";
+}
+<form method="post" action="/Order/Create">
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h1 class="create-header"> New Order</h1>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            <label class="control-label col-md-2">Choose order type:</label>
+            <div class="col-md-10">
+                <span class="glyphicon glyphicon-arrow-down" style="color:green;" title="Import">Import</span>
+                @Html.RadioButtonFor(model => model.OrderType, 0, new { @checked = true })
+                <span class="glyphicon glyphicon-arrow-up" style="color:red;" title="Export">Export</span>
+                @Html.RadioButtonFor(model => model.OrderType, 1)
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Choose Product:</label>
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.ProductId,
+                                                   new SelectList(Model.AllProducts,
+                                                    "Id", "Name"),
+                                                    "--  Select Product  --",
+                                                  new { @class = "form-control", @onchange = "calculateOrderSum()" })
+                <a id="qr_generate" class=" btn btn-success">
+                    QR <span class="glyphicon glyphicon-qrcode"></span>
+                </a>
+                @Html.ValidationMessageFor(model => model.ProductId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Quantity, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form-control", @onchange = "calculateOrderSum()" } })
+                @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Sum, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Sum, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                @Html.ValidationMessageFor(model => model.Sum, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" id="order_create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+@section Scripts{
+    <script src="~/Scripts/order.js"></script>
+}
